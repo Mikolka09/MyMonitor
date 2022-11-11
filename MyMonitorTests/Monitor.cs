@@ -15,8 +15,12 @@ namespace MyMonitorTests
         public void Test1()
         {
             //Arrange
+            CancellationTokenSource cancellationToken = new CancellationTokenSource();
+                       
 
             //Act
+            
+
 
             //Assert
             
