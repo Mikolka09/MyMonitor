@@ -19,17 +19,33 @@ namespace MyMonitor
 
             Console.WriteLine("Welcome to Monitor!");
 
-            Monitor monitor = new Monitor();
-            Console.Write("\nInsert name process: ");
-            monitor.NameProcess1 = Console.ReadLine();
+            Monitoring monitor = new Monitoring();
 
+            //We accept the process name from the user, followed by input validation
+            Console.Write("\nInsert name process: ");
+            while (true)
+            {
+                string input = Console.ReadLine();
+                if (!string.IsNullOrEmpty(input))
+                {
+                    monitor.NameProcessGetSet = input;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("\n[ERROR]: Invalid input");
+                    Console.Write("Retry Insert name process: ");
+                }
+            }
+
+            //We accept the lifetime of the process from the user, followed by input validation
             Console.Write("\nInsert max life span minutes: ");
             while (true)
             {
                 string input = Console.ReadLine();
                 if (int.TryParse(input, out int numb))
                 {
-                    monitor.MaxLifeSpan1 = numb;
+                    monitor.MaxLifeSpanGetSet = numb;
                     break;
                 }
                 else
@@ -39,13 +55,14 @@ namespace MyMonitor
                 }
             }
 
+            //We accept from the user a period for checking processes, followed by checking input
             Console.Write("\nInsert period monitoring minutes: ");
             while (true)
             {
                 string input = Console.ReadLine();
                 if (int.TryParse(input, out int numb))
                 {
-                    monitor.PeriodMonitoring1 = numb;
+                    monitor.PeriodMonitoringGetSet = numb;
                     break;
                 }
                 else
@@ -56,8 +73,11 @@ namespace MyMonitor
             }
 
             cancellationToken = new CancellationTokenSource();
+
+            //Start monitoring processes
             Task.Run(() => monitor.StartMonitor(cancellationToken.Token));
 
+            //Waiting for a keypress - "Q" to exit and close the application
             while (true)
             {
                 if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Q)
